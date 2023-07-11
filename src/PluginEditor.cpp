@@ -23,7 +23,6 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor(AudioPluginAudi
 
   addAndMakeVisible(gainSlider);
   addAndMakeVisible(bypassButton);
-
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor() = default;
