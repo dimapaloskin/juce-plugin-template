@@ -1,6 +1,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "PluginParameters.h"
+#include "DSP.h"
 
 class AudioPluginAudioProcessor : public juce::AudioProcessor {
  public:
@@ -34,9 +36,8 @@ class AudioPluginAudioProcessor : public juce::AudioProcessor {
   void getStateInformation(juce::MemoryBlock &destData) override;
   void setStateInformation(const void *data, int sizeInBytes) override;
 
-  juce::AudioProcessorValueTreeState processorState;
-
-  static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+  juce::AudioProcessorValueTreeState parameters;
+  DSP dsp;
  private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessor)
 };
