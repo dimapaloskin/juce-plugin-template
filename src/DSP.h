@@ -4,8 +4,12 @@
 
 class DSP {
 public:
+  JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE("-Wshadow-field-in-constructor")
+
   explicit DSP(juce::AudioProcessorValueTreeState &parameters)
       : parameters(parameters) {}
+
+  JUCE_END_IGNORE_WARNINGS_GCC_LIKE
 
   ~DSP() = default;
 
