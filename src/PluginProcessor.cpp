@@ -11,7 +11,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
 #endif
                          .withOutput("Output", juce::AudioChannelSet::stereo(), true)
 #endif
-), processorState(*this, nullptr, "STATE", createParameterLayout()) {}
+) {}
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor() = default;
 
@@ -93,22 +93,6 @@ bool AudioPluginAudioProcessor::isBusesLayoutSupported(const BusesLayout &layout
 #endif
 }
 
-juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::createParameterLayout() {
-  juce::AudioProcessorValueTreeState::ParameterLayout layout;
-
-  layout.add(std::make_unique<juce::AudioParameterFloat>(
-      "GAIN",
-      "Gain",
-      juce::NormalisableRange<float>(0.0f, 1.0f, 0.001f, 0.5f),
-      0.0f));
-
-  layout.add(std::make_unique<juce::AudioParameterBool>(
-      "BYPASS",
-      "Bypass",
-      false));
-
-  return layout;
-}
 
 void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
                                              juce::MidiBuffer &midiMessages) {
@@ -118,30 +102,23 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
   auto totalNumInputChannels = getTotalNumInputChannels();
   auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-  auto gainParam = processorState.getRawParameterValue("GAIN")->load();
-  auto bypassParam = processorState.getRawParameterValue("BYPASS")->load();
-
-  auto gain = gainParam * (1.0f - bypassParam);
-
   for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
     buffer.clear(i, 0, buffer.getNumSamples());
 
-  for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
-    auto value = gain * juce::Random::getSystemRandom().nextFloat();
 
-    for (int channel = 0; channel < totalNumOutputChannels; ++channel) {
-      buffer.setSample(channel, sample, value);
-    }
+  for (int channel = 0; channel < totalNumOutputChannels; ++channel) {
+    auto* channelData = buffer.getWritePointer(channel);
+    for (int n = 0; n < buffer.getNumSamples(); ++n) {}
   }
 }
 
 bool AudioPluginAudioProcessor::hasEditor() const {
-  return true; // (change this to false if you choose to not supply an editor)
+  return true;
 }
 
 juce::AudioProcessorEditor *AudioPluginAudioProcessor::createEditor() {
-  return new AudioPluginAudioProcessorEditor(*this);
-//  return new juce::GenericAudioProcessorEditor(*this);
+//  return new AudioPluginAudioProcessorEditor(*this);
+  return new juce::GenericAudioProcessorEditor(*this);
 }
 
 void AudioPluginAudioProcessor::getStateInformation(juce::MemoryBlock &destData) {
