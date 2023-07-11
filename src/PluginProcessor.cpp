@@ -115,7 +115,7 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
 }
 
 bool AudioPluginAudioProcessor::hasEditor() const {
-  return true; // (change this to false if you choose to not supply an editor)
+  return true;
 }
 
 juce::AudioProcessorEditor *AudioPluginAudioProcessor::createEditor() {
