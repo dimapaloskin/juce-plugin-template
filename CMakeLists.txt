@@ -40,6 +40,15 @@ set(JUCE_COPY_PLUGIN_AFTER_BUILD TRUE)
 
 juce_generate_juce_header(${TARGET_NAME})
 
+if (CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
+    if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS "15.0")
+        target_compile_definitions(${TARGET_NAME} PRIVATE
+                JUCE_SILENCE_XCODE_15_LINKER_WARNING=1
+        )
+        add_link_options("-Wl,-weak_reference_mismatches,weak")
+    endif ()
+endif ()
+
 target_sources(${TARGET_NAME}
         PRIVATE
         src/PluginEditor.cpp
