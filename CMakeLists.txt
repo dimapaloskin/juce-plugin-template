@@ -83,5 +83,3 @@ target_link_libraries(${TARGET_NAME}
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
-
-target_link_options(${TARGET_NAME} PRIVATE "-Wl,-ld_classic")
